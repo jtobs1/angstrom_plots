@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import sys, os
 
-
 def loc_identifier(arr1, arr2, background_value):
     '''Identifies the locations (i,j) for each "star" common among both scenes
     The "working code" for object_identifier.
@@ -35,6 +34,7 @@ def object_identifier(fdir, background_value=2e2):
     # this will extract the (i,j) locations of each star, 
     # to simplify further star identification
     images = sorted(glob.glob(os.path.join(fdir, '*npy')))
+
     im1 = np.load(images[5], allow_pickle=True) # 1st image
     im2 = np.load(images[7], allow_pickle=True) # 2nd image
 
@@ -81,7 +81,7 @@ def line_fit(x, y, deg=1):
     poly = np.poly1d(coeffs)
     return coeffs, poly
 
-def langley_plot(star_dict):
+def langley_plot(star_dict, start_val, incr, window_size, smoothen, band='450nm'):
     '''Creates the Langley Plots for stars within the range of star_dict'''
 
     # at some point, link t to actual times
@@ -89,8 +89,6 @@ def langley_plot(star_dict):
     # This can range from 0 to roughly 2500 (depending on cloud cover)
     # All you have to do is count the stars.
     coefficients = [] # cummulative tracker of slopes
-    start_val = 80
-    incr = 10
     for j in range(start_val, start_val+incr): # Controls how many stars to analyze and plot.
         star_val = []
         
@@ -106,10 +104,9 @@ def langley_plot(star_dict):
         # The FIT should be applied before the sliding window! (if its not too noisy)
 
         # apply sliding_window to star_val to smoothen them jawns
-        s = 20
-        smoothen = True
+        window_size = 20
         if smoothen:
-            star_val = sliding_window(star_val, s=s)
+            star_val = sliding_window(star_val, s=window_size)
 
         ts = np.arange(0, len(star_val))
         plt.plot(ts, star_val, label=f'star {j}', linewidth='1', marker='.', linestyle=':')
@@ -122,9 +119,9 @@ def langley_plot(star_dict):
     average_slope = np.round(np.mean(np.array(coefficients)), 4)
     
     plt.ylim(0, 2500)
-    plt.title(f'520nm Star "Brightnesses": Average Slope={average_slope}')
+    plt.title(f'{band} Star "Brightnesses": Average Slope={average_slope}')
     plt.ylabel('Digital Number')
     plt.xlabel('Time (unadjusted)')
-    plt.savefig(f'./test_langley_plots/star{start_val}-{start_val+incr}_smoothed{s}.png')
+    plt.savefig(f'./test_langley_plots/{band}_star{start_val}-{start_val+incr}_smoothed{window_size}.png')
     plt.show()
     plt.close()
