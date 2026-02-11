@@ -26,7 +26,9 @@ if load_images:
             image = Image.open(image_file)
             image_array = np.array(image)
             # np.save(f'./520nm/file_{num}', image_array, allow_pickle=True)
-            plt.imshow(image_array, vmin=2e2, vmax=8e2, cmap='cubehelix')
+            im=plt.imshow(image_array, vmin=2e2, vmax=8e2, cmap='cubehelix')
+            plt.colorbar(mappable=im, location='bottom', shrink=0.5)
+            plt.tight_layout()
             plt.show()
             # plt.savefig(f'./450nm/im_{num}.png', format='png', dpi=150)
             plt.close()
@@ -34,9 +36,9 @@ if load_images:
 
         except:
             print("Error")
-            # break
+            sys.exit()
        
-        if num > 100:
+        if num > 1:
             break
 
 # Creates a loop of the images
