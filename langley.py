@@ -37,8 +37,6 @@ def langley_plot(dataframe):
         x = 1 / np.cos( zenith )
         y = np.log( star_dn_normalized / texp )
         
-        print(np.rad2deg(zenith), zenith)
-
         # Add a best-fit line
         m, b = np.polyfit( x[ ~dns[col].isna() ], y[ ~dns[col].isna() ], 1)
         ax.plot(x, m*x+b, linestyle='-', linewidth=1.2, c=colors[num])

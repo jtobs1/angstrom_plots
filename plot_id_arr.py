@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from weighted_average import weight as weight
 import sys
 
-def plot_id_array(id_df, plot_val):
+def plot_id_array(id_df, plot_val, star_id=None):
     """
     Plots all stars in the ID Array,
     Should be a scatter plot with connected points for each star ID.
@@ -63,9 +63,20 @@ def plot_id_array(id_df, plot_val):
 
         weights = 1 / sigmam**2
 
-        ax[0].plot(id_df.index, m*id_df.index + b, linestyle='-', linewidth=0.5, label=f'ID {col} Trend', c=colors[num])
-        
-        ax[1].plot(id_df.index, data, marker=',', linestyle='-', linewidth=0.5, label=f'ID {col}', c=colors[num])
+        # Plot all the stars 
+        if star_id == None:
+            ax[0].plot(id_df.index, m*id_df.index + b, linestyle='-', linewidth=0.5, label=f'ID {col} Trend', c=colors[num])
+            
+            ax[1].plot(id_df.index, data, marker=',', linestyle='-', linewidth=0.5, label=f'ID {col}', c=colors[num])
+        # Plot one select star
+        elif star_id != None:
+            id = star_id
+            if id in id_df.columns:
+                ax[0].plot(id_df.index, m*id_df.index + b, linestyle='-', linewidth=0.5, label=f'ID {id} Trend', c=colors[num])
+                ax[1].plot(id_df.index, data, marker=',', linestyle='-', linewidth=0.5, label=f'ID {id}', c=colors[num])
+            else:
+                print(f"Star ID {id} not found in the DataFrame.")
+                sys.exit()
 
         # plot the distribution of slopes
         slope_arr.append(m)
@@ -75,7 +86,7 @@ def plot_id_array(id_df, plot_val):
     num_sum = 0
     den_sum = 0
     for m, w in zip(slope_arr, weight_arr):
-        print(w, m)
+        # print(w, m)
         num_sum += m * w
         den_sum += w
     weighted_slope = num_sum / den_sum

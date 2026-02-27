@@ -14,5 +14,5 @@ def weight(idx, data):
     # Compute the standard deviation in the slope
     sigmam = sigmay / (np.sqrt(N) * sigmax)
     
-    return sigmam
+    return sigmax, sigmay, sigmam
     
