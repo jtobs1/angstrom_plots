@@ -1,0 +1,12 @@
+{
+    "data_dir":"/Users/jacksontobin/Local_Documents/NightTime_Research/ANGSTROM/Star_Photometry/Angstrom3_ColState/Angstrom_Overnight_2026_04_01_030000_040000/",
+    "time_range": ["03:00:00", "04:00:00"],
+    "camera_SN": ["22245818", "22245821", "22010605", "22011988"],
+    "elevation_angle": [15, 15, 15, 15],
+    "azimuth_angle": [41, 41, 41, 41],
+    "region_lat": 40.5876,
+    "region_lon": -105.14758,
+    "pixel_pitch_um": [9, 9, 9, 9],
+    "focal_length_mm": [35, 35, 35, 35],
+    "camera_exposure_ms": [10000.0, 10000.0, 10000.0, 10000.0]
+}
